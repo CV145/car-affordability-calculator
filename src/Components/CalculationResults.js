@@ -50,7 +50,15 @@ function CalculationResults({ results }) {
                     <span>${results.totalLoanAndInterest}</span>
                 </div>
             </div>
-            {/* ... */}
+            <div className="text-xs text-center text-gray-600 mt-4 px-4">
+                <p>
+                    The results provided by this calculator are for informational purposes only
+                    and should not be taken as financial advice. Actual terms, including APR and
+                    other fees, will vary based on the final agreement with your lender. For
+                    accurate car loan information, it's important to consult with a financial
+                    advisor or loan officer.
+                </p>
+            </div>
         </div>
     );
 }

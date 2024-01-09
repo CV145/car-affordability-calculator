@@ -10,7 +10,7 @@ function App() {
     tradeInValue: '',
     owedOnTrade: '',
     creditScore: '',
-    loanTerm: ''
+    loanTerm: '36'
   });
   const [results, setResults] = useState(null);
 

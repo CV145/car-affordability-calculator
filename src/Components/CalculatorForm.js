@@ -122,6 +122,7 @@ function CalculatorForm({ formData, setFormData, setResults }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log('Form Data on Submit:', formData);
         const results = calculateAffordability(formData);
         setResults(results);
     };

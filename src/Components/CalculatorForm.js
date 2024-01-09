@@ -60,6 +60,7 @@ function CalculatorForm({ formData, setFormData, setResults }) {
                     value={formData.monthlyPayment}
                     onChange={handleChange}
                     placeholder="Desired Monthly Payment"
+                    prefix="$"
                 />
 
                 {/* Down Payment Input */}
@@ -70,6 +71,7 @@ function CalculatorForm({ formData, setFormData, setResults }) {
                     value={formData.downPayment}
                     onChange={handleChange}
                     placeholder="Down Payment"
+                    prefix="$"
                 />
 
                 {/* Trade-in Value Input */}
@@ -80,16 +82,7 @@ function CalculatorForm({ formData, setFormData, setResults }) {
                     value={formData.tradeInValue}
                     onChange={handleChange}
                     placeholder="Trade-in Value"
-                />
-
-                {/* Amount Owed on Trade Input */}
-                <InputField
-                    label="Amount Owed on Trade"
-                    name="owedOnTrade"
-                    type="number"
-                    value={formData.owedOnTrade}
-                    onChange={handleChange}
-                    placeholder="Amount Owed on Trade"
+                    prefix="$"
                 />
 
                 {/* Credit Score Range Selector */}
@@ -119,6 +112,7 @@ function CalculatorForm({ formData, setFormData, setResults }) {
                     value={formData.loanTerm}
                     onChange={handleChange}
                     options={[36, 48, 60, 72]}
+                    isCurrency={false}
                 />
 
 

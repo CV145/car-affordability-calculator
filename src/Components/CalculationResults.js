@@ -2,6 +2,17 @@
 function CalculationResults({ results }) {
     if (!results) return null;
 
+    const redirectToCarShop = () => {
+        if (results && results.affordableCarPrice) {
+            const maxPrice = Math.round(results.affordableCarPrice);
+            const shopUrl = `https://www.cars.com/shopping/results/?list_price_max=${maxPrice}`;
+            window.open(shopUrl, '_blank');
+        } else {
+            alert("Please calculate your affordability first.");
+        }
+    };
+
+
     return (
         <div className="mt-6 p-4 border-t border-gray-200">
             <h2 className="text-xl font-semibold text-center text-gray-800 mb-4">You can afford cars up to</h2>
@@ -58,6 +69,14 @@ function CalculationResults({ results }) {
                     accurate car loan information, it's important to consult with a financial
                     advisor or loan officer.
                 </p>
+            </div>
+            <div className="flex justify-center mt-4">
+                <button
+                    onClick={redirectToCarShop}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                    Browse Cars
+                </button>
             </div>
         </div>
     );

@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/car-affordability-calculator/static/css/main.44dcb5d4.css",
-    "main.js": "/car-affordability-calculator/static/js/main.fc184219.js",
+    "main.js": "/car-affordability-calculator/static/js/main.3b4cb095.js",
     "static/js/787.01e90fba.chunk.js": "/car-affordability-calculator/static/js/787.01e90fba.chunk.js",
     "static/media/rainy_cityscape.png": "/car-affordability-calculator/static/media/rainy_cityscape.696811d3c93c48eb8eb6.png",
     "index.html": "/car-affordability-calculator/index.html",
     "main.44dcb5d4.css.map": "/car-affordability-calculator/static/css/main.44dcb5d4.css.map",
-    "main.fc184219.js.map": "/car-affordability-calculator/static/js/main.fc184219.js.map",
+    "main.3b4cb095.js.map": "/car-affordability-calculator/static/js/main.3b4cb095.js.map",
     "787.01e90fba.chunk.js.map": "/car-affordability-calculator/static/js/787.01e90fba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.44dcb5d4.css",
-    "static/js/main.fc184219.js"
+    "static/js/main.3b4cb095.js"
   ]
 }

@@ -6,40 +6,119 @@ function CalculatorForm({ formData, setFormData, setResults }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: value
-        }));
+        console.log('Before update:', formData.creditScore);
+
+        let modifiedValue = value;
+        if (name === "creditScore") {
+            switch (value) {
+                case "excellent":
+                    modifiedValue = 750;
+                    break;
+                case "good":
+                    modifiedValue = 700;
+                    break;
+                case "fair":
+                    modifiedValue = 650;
+                    break;
+                case "poor":
+                    modifiedValue = 600;
+                    break;
+                case "bad":
+                    modifiedValue = 550; // or whatever you deem appropriate
+                    break;
+                default:
+                    modifiedValue = null; // if no selection is made, or it's an invalid value
+            }
+        }
+
+        setFormData(prevFormData => {
+            const updatedFormData = { ...prevFormData, [name]: value };
+            console.log('Updating formData:', name, value);
+            console.log('After update:', updatedFormData.creditScore);
+            return updatedFormData;
+        });
     };
+
 
 
     function calculateAffordability(data) {
         const {
-            monthlyPayment,
-            downPayment,
-            tradeInValue,
-            owedOnTrade,
+            monthlyPayment: rawMonthlyPayment,
+            downPayment: rawDownPayment,
+            tradeInValue: rawTradeInValue,
+            owedOnTrade: rawOwedOnTrade,
             creditScore,
-            loanTerm
+            loanTerm // assuming loanTerm is in months
         } = data;
 
-        // Assume the interest rate based on credit score ranges, for example purposes
-        let interestRate = creditScore >= 750 ? 0.05 : creditScore >= 650 ? 0.075 : 0.10;
+        // Convert all inputs to numbers, ensuring they're not NaN
+        const monthlyPayment = Number(rawMonthlyPayment) || 0;
+        const downPayment = Number(rawDownPayment) || 0;
+        const tradeInValue = Number(rawTradeInValue) || 0;
+        const owedOnTrade = Number(rawOwedOnTrade) || 0;
 
-        // Convert the loan term in months to years for the calculation
-        const loanTermYears = loanTerm / 12;
+        // Convert creditScore range to an actual number
+        let numericalCreditScore;
+        switch (data.creditScore) {
+            case 'excellent':
+                numericalCreditScore = 750;
+                break;
+            case 'good':
+                numericalCreditScore = 700;
+                break;
+            case 'fair':
+                numericalCreditScore = 650;
+                break;
+            case 'poor':
+                numericalCreditScore = 600;
+                break;
+            case 'bad':
+                numericalCreditScore = 550;
+                break;
+            default:
+                numericalCreditScore = null; // Handle the 'Select Credit Score Range' or any invalid cases
+        }
 
-        // Calculate loan amount that can be taken out based on monthly payment and interest rate
-        // This is a reverse calculation from the monthly payment of a simple loan formula
-        const loanAmount = (monthlyPayment / ((interestRate / 12) / (1 - Math.pow(1 + (interestRate / 12), -loanTerm))));
+        // Assume the interest rate based on the converted credit score
+        let interestRate;
+        if (numericalCreditScore >= 750) {
+            interestRate = 0.05;
+        } else if (numericalCreditScore >= 700) {
+            interestRate = 0.075;
+        } else if (numericalCreditScore >= 650) {
+            interestRate = 0.10;
+        } else {
+            interestRate = 0.15; // Assuming a default higher interest rate for 'poor' and 'bad' or any invalid score
+        }
+        let monthlyInterestRate = interestRate / 12;
 
-        // The total price of the car you can afford is then the loan amount plus down payment plus trade-in value minus owed on trade
-        const affordableCarPrice = loanAmount + Number(downPayment) + Number(tradeInValue) - Number(owedOnTrade);
+        // Calculate the total loan amount
+        const loanAmount = monthlyPayment *
+            ((1 - Math.pow(1 + monthlyInterestRate, -loanTerm)) / monthlyInterestRate);
+
+        // Adjust the loan amount based on down payment, trade-in value, and amount owed on trade-in
+        const totalCarValue = loanAmount + downPayment + tradeInValue - owedOnTrade;
+
+        // Calculate total interest paid over the life of the loan
+        const totalInterestPaid = (monthlyPayment * loanTerm) - loanAmount;
+
+        // Calculate total repayment amount (loan amount plus interest)
+        const totalLoanAndInterest = loanAmount + totalInterestPaid;
 
         return {
-            affordableCarPrice: affordableCarPrice.toFixed(2)
+            affordableCarPrice: totalCarValue.toFixed(2),
+            totalLoanAmount: loanAmount.toFixed(2),
+            totalInterestPaid: totalInterestPaid.toFixed(2),
+            totalLoanAndInterest: totalLoanAndInterest.toFixed(2),
+            monthlyPayment: monthlyPayment.toFixed(2), // This is provided by the user
+            downPayment: downPayment.toFixed(2),
+            tradeInValue: tradeInValue.toFixed(2),
+            owedOnTrade: owedOnTrade.toFixed(2),
+            interestRate: (monthlyInterestRate * 12 * 100).toFixed(2), // Convert to annual percentage rate
         };
     }
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -103,6 +182,7 @@ function CalculatorForm({ formData, setFormData, setResults }) {
                         <option value="poor">600-649</option>
                         <option value="bad">Below 600</option>
                     </select>
+
                 </div>
 
                 {/* Loan Term Input */}
